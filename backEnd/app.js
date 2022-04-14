@@ -17,8 +17,7 @@ app.set("view engine", "ejs");
 app.post('/generate',(req,res)=>{
   try {
       var newUrl=crypto.randomBytes(3).toString("hex");
-      urls.push({shorter:newUrl, secreto:req.body.link, count:1})
-      console.log(urls)
+      urls.push({shorter:newUrl, secreto:req.body.link, count:0, cant:req.body.cant})
       res.json( {message: "all correct", newLink:"http://localhost:3030/"+newUrl} )
   } catch (error) {
       res.status(400)
@@ -29,17 +28,15 @@ app.post('/generate',(req,res)=>{
 app.get('/:id',(req,res)=>{
   try {
       let data=getSecret(req.params.id)
-      console.log("fsd")
-      console.log(data)
-      if (data!=='') {
-        if (data.count===2) {
+      if (String(data)!=='') {
+        if (data.count<=data.cant) {
           res.render("index", { mes:data.secreto});
         } else {
-          res.render("index", { mes:"secret no longer valid, times that it has been tried to read:"+(data.count-1)});
+          res.render("index", { mes:"Secret no longer valid, times that it has been tried to read: "+(data.count-1)+" of "+data.cant});
         }        
       } else {
           res.status(400)
-          res.json({message:"link no valid"} )
+          res.render("index", { mes:"This code for get a secret don't exist"});
       }
   } catch (error) {
       res.json( {message: error.message} )
@@ -48,10 +45,8 @@ app.get('/:id',(req,res)=>{
 const getSecret=(code)=>{
   var secreto=[]
   urls.map((data, index)=>{
-    console.log(data)
       code===data.shorter&&(urls[index].count=(urls[index].count+1),secreto=urls[index])
   })
-  console.log(secreto)
   return secreto
 }
 // Starting server.

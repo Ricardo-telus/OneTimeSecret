@@ -2,6 +2,7 @@ html, body{
   min-height:100vh;
   margin: 0;
   min-width: 100vh;
+  height: 920px;
 }
 #main{
   height: 100%;
@@ -46,4 +47,7 @@ html, body{
   height:10%;
   max-width: 100px;
   max-height: 100px;
+}
+#number{
+  max-width: 15px;
 }

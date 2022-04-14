@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, CustomProvider, Content, Container, Toggle,Grid, Row, Col, Input, Divider, Message, toaster} from 'rsuite';
+import { Button, CustomProvider, Content, Container, Toggle,Grid, Row, Col, Input, Divider, InputNumber, Message, toaster} from 'rsuite';
 import axios from 'axios';
 import 'rsuite/dist/rsuite.min.css'; 
 import './App.css';
@@ -12,12 +12,14 @@ function App() {
   const [resolve, setResolve]=useState(false)
   const [show, setShow]=useState(false)
   const [type,setType]=useState(false)
-  const text='I really hope get 100 points'
+  const [cant,setCant]=useState(0)
   const reset=()=>{
     setOldLink('')
     setShow(false)
     setNewLink('')
     setOldLink('')
+    setCant(1)
+    document.getElementById('num').value=1
     setType(false)
     document.getElementById('old').value=''
   }
@@ -27,7 +29,8 @@ function App() {
       setResolve(true)
       try {
         const response = await axios.post(URI, {
-            link:oldLink
+            link:oldLink,
+            cant:cant
             }) 
         setTimeout(() => {
           setResolve(false)
@@ -54,10 +57,6 @@ function App() {
      {type===true?('Copied'):('The input is empty')}
     </Message>
   );
-  const example=()=>{
-    setOldLink(text)
-    document.getElementById('old').value=text
-  }
   return (
     <CustomProvider theme={theme}>
       <Container>
@@ -90,9 +89,17 @@ function App() {
               </Col>              
             </Row>
             <Row className="show-grid">
-            <Col xs={24} id="col">
-               <Button id="send1" color="blue" appearance="primary" size='lg' onClick={convert} loading={resolve}>Obtain link</Button>
-               <Button id="send" color="orange" appearance="primary" size='lg' onClick={example} loading={resolve}>Example?</Button>
+              <Col xsOffset={8} xs={4} id="col">
+                <InputNumber 
+                  id="num"
+                  size="lg" 
+                  min="1" 
+                  defaultValue="1"
+                  onChange={(value) => { setCant(value) }}
+                  />
+              </Col>
+              <Col xs={4} id="col">                
+                <Button id="send1" color="blue" appearance="primary" size='lg' onClick={convert} loading={resolve}>Obtain link</Button>
               </Col>
             </Row>
             <Row className="show-grid" id="resp" hidden={show===false?(true):(false)} >
