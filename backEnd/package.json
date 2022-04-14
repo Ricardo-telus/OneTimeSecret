@@ -1,0 +1,17 @@
+{
+  "name": "one-time-secret",
+  "version": "0.0.1",
+  "description": "one time secret",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "JD",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
